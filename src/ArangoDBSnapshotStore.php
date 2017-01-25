@@ -1,8 +1,8 @@
 <?php
 /**
  * This file is part of the prooph/arangodb-snapshot-store.
- * (c) 2016-2016 prooph software GmbH <contact@prooph.de>
- * (c) 2016-2016 Sascha-Oliver Prolic <saschaprolic@googlemail.com>
+ * (c) 2016-2017 prooph software GmbH <contact@prooph.de>
+ * (c) 2016-2017 Sascha-Oliver Prolic <saschaprolic@googlemail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,9 +15,8 @@ namespace Prooph\ArangoDB\SnapshotStore;
 use ArangoDBClient\Batch;
 use ArangoDBClient\Connection;
 use ArangoDBClient\Statement;
-use Prooph\EventSourcing\Aggregate\AggregateType;
-use Prooph\EventSourcing\Snapshot\Snapshot;
-use Prooph\EventSourcing\Snapshot\SnapshotStore;
+use Prooph\SnapshotStore\Snapshot;
+use Prooph\SnapshotStore\SnapshotStore;
 
 final class ArangoDBSnapshotStore implements SnapshotStore
 {
@@ -48,7 +47,7 @@ final class ArangoDBSnapshotStore implements SnapshotStore
         $this->defaultSnapshotCollectionName = $defaultSnapshotCollectionName;
     }
 
-    public function get(AggregateType $aggregateType, string $aggregateId): ?Snapshot
+    public function get(string $aggregateType, string $aggregateId): ?Snapshot
     {
         $collectionName = $this->getCollectionName($aggregateType);
 
@@ -79,40 +78,45 @@ final class ArangoDBSnapshotStore implements SnapshotStore
         );
     }
 
-    public function save(Snapshot $snapshot): void
+    public function save(Snapshot ...$snapshots): void
     {
-        $collectionName = $this->getCollectionName($snapshot->aggregateType());
-
         $batch = new Batch($this->connection);
 
-        $batch->append(
-            'DELETE',
-            'DELETE /_api/document/' . $collectionName . '/' . $snapshot->aggregateId() . ' HTTP/1.1'
-        );
+        foreach ($snapshots as $snapshot) {
+            $aggregateId = $snapshot->aggregateId();
+            $aggregateType = $snapshot->aggregateType();
 
-        $data = [
-            '_key' => $snapshot->aggregateId(),
-            'aggregate_type' => $snapshot->aggregateType()->toString(),
-            'last_version' => $snapshot->lastVersion(),
-            'created_at' => $snapshot->createdAt()->format('Y-m-d\TH:i:s.u'),
-            'aggregate_root' => serialize($snapshot->aggregateRoot()),
-        ];
+            $collectionName = $this->getCollectionName($aggregateType);
 
-        $batch->append(
-            'POST',
-            'POST /_api/document/' . $collectionName . "?silent=true HTTP/1.1\n\n"
-            . $this->connection->json_encode_wrapper($data)
-        );
+            $batch->append(
+                'DELETE',
+                'DELETE /_api/document/' . $collectionName . '/' . $aggregateId . ' HTTP/1.1'
+            );
+
+            $data = [
+                '_key' => $aggregateId,
+                'aggregate_type' => $aggregateType,
+                'last_version' => $snapshot->lastVersion(),
+                'created_at' => $snapshot->createdAt()->format('Y-m-d\TH:i:s.u'),
+                'aggregate_root' => serialize($snapshot->aggregateRoot()),
+            ];
+
+            $batch->append(
+                'POST',
+                'POST /_api/document/' . $collectionName . "?silent=true HTTP/1.1\n\n"
+                . $this->connection->json_encode_wrapper($data)
+            );
+        }
 
         $batch->process();
     }
 
-    private function getCollectionName(AggregateType $aggregateType): string
+    private function getCollectionName(string $aggregateType): string
     {
         $collectionName = $this->defaultSnapshotCollectionName;
 
-        if (isset($this->snapshotCollectionMap[$aggregateType->toString()])) {
-            $collectionName = $this->snapshotCollectionMap[$aggregateType->toString()];
+        if (isset($this->snapshotCollectionMap[$aggregateType])) {
+            $collectionName = $this->snapshotCollectionMap[$aggregateType];
         }
 
         return $collectionName;

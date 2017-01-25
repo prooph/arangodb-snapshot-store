@@ -1,8 +1,8 @@
 <?php
 /**
  * This file is part of the prooph/arangodb-snapshot-store.
- * (c) 2016-2016 prooph software GmbH <contact@prooph.de>
- * (c) 2016-2016 Sascha-Oliver Prolic <saschaprolic@googlemail.com>
+ * (c) 2016-2017 prooph software GmbH <contact@prooph.de>
+ * (c) 2016-2017 Sascha-Oliver Prolic <saschaprolic@googlemail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -18,9 +18,7 @@ use DateTimeImmutable;
 use DateTimeZone;
 use PHPUnit\Framework\TestCase;
 use Prooph\ArangoDB\SnapshotStore\ArangoDBSnapshotStore;
-use Prooph\EventSourcing\Aggregate\AggregateType;
-use Prooph\EventSourcing\Snapshot\Snapshot;
-use ProophTest\EventSourcing\Mock\User;
+use Prooph\SnapshotStore\Snapshot;
 
 class ArangoDBSnapshotStoreTest extends TestCase
 {
@@ -39,8 +37,8 @@ class ArangoDBSnapshotStoreTest extends TestCase
      */
     public function it_saves_and_reads()
     {
-        $aggregateRoot = User::nameNew('Sandro');
-        $aggregateType = AggregateType::fromAggregateRoot($aggregateRoot);
+        $aggregateRoot = ['name' => 'Sascha'];
+        $aggregateType = 'user';
 
         $date = date('Y-m-d\TH:i:s.u');
         $now = DateTimeImmutable::createFromFormat('Y-m-d\TH:i:s.u', $date, new DateTimeZone('UTC'));
@@ -60,9 +58,32 @@ class ArangoDBSnapshotStoreTest extends TestCase
     /**
      * @test
      */
+    public function it_saves_multiple_snapshots()
+    {
+        $aggregateRoot = ['name' => 'Sascha'];
+        $aggregateType = 'user';
+
+        $date = date('Y-m-d\TH:i:s.u');
+        $now = DateTimeImmutable::createFromFormat('Y-m-d\TH:i:s.u', $date, new DateTimeZone('UTC'));
+
+        $snapshot1 = new Snapshot($aggregateType, 'id1', $aggregateRoot, 1, $now);
+        $snapshot2 = new Snapshot($aggregateType, 'id2', $aggregateRoot, 2, $now);
+
+        $this->snapshotStore->save($snapshot1, $snapshot2);
+
+        $readSnapshot = $this->snapshotStore->get($aggregateType, 'id1');
+        $this->assertEquals($snapshot1, $readSnapshot);
+
+        $readSnapshot = $this->snapshotStore->get($aggregateType, 'id2');
+        $this->assertEquals($snapshot2, $readSnapshot);
+    }
+
+    /**
+     * @test
+     */
     public function it_uses_custom_snapshot_table_map()
     {
-        $aggregateType = AggregateType::fromAggregateRootClass(\stdClass::class);
+        $aggregateType = \stdClass::class;
         $aggregateRoot = new \stdClass();
         $aggregateRoot->foo = 'bar';
 
