@@ -31,7 +31,7 @@
     "prefer-stable": true,
     "require": {
         "php": "^7.1",
-        "prooph/snapshot-store" : "1.0.x-dev",
+        "prooph/snapshot-store" : "^1.1",
         "triagens/arangodb": "dev-devel"
     },
     "require-dev": {

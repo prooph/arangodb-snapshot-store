@@ -13,11 +13,13 @@ declare(strict_types=1);
 namespace ProophTest\ArangoDB\SnapshotStore;
 
 use ArangoDBClient\Connection;
+use ArangoDBClient\ServerException;
 use ArangoDBClient\Urls;
 use DateTimeImmutable;
 use DateTimeZone;
 use PHPUnit\Framework\TestCase;
 use Prooph\ArangoDB\SnapshotStore\ArangoDBSnapshotStore;
+use Prooph\ArangoDB\SnapshotStore\Exception\TruncateCollectionFailed;
 use Prooph\SnapshotStore\Snapshot;
 
 class ArangoDBSnapshotStoreTest extends TestCase
@@ -101,6 +103,43 @@ class ArangoDBSnapshotStoreTest extends TestCase
         $this->assertEquals($snapshot, $readSnapshot);
     }
 
+    /**
+     * @test
+     */
+    public function it_truncate_snapshot()
+    {
+        $aggregateRoot = ['name' => 'Sascha'];
+        $aggregateType = 'user';
+
+        $date = date('Y-m-d\TH:i:s.u');
+        $now = DateTimeImmutable::createFromFormat('Y-m-d\TH:i:s.u', $date, new DateTimeZone('UTC'));
+
+        $snapshot = new Snapshot($aggregateType, 'id', $aggregateRoot, 1, $now);
+        $this->snapshotStore->save($snapshot);
+
+        $snapshot = new Snapshot($aggregateType, 'id', $aggregateRoot, 2, $now);
+        $this->snapshotStore->save($snapshot);
+
+        $readSnapshot = $this->snapshotStore->get($aggregateType, 'id');
+        $this->assertEquals($snapshot, $readSnapshot);
+
+        $this->snapshotStore->removeAll($aggregateType);
+
+        $this->assertNull($this->snapshotStore->get($aggregateType, 'id'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_truncate_collection_failed_exception()
+    {
+        $aggregateType = 'user';
+
+        $this->connection->delete(Urls::URL_COLLECTION . '/snapshots');
+        $this->expectException(TruncateCollectionFailed::class);
+        $this->snapshotStore->removeAll($aggregateType);
+    }
+
     protected function setUp(): void
     {
         $this->connection = TestUtil::getClient();
@@ -117,7 +156,11 @@ class ArangoDBSnapshotStoreTest extends TestCase
 
     protected function tearDown(): void
     {
-        $this->connection->delete(Urls::URL_COLLECTION . '/snapshots');
+        try {
+            $this->connection->delete(Urls::URL_COLLECTION . '/snapshots');
+        } catch (ServerException $ex) {
+            // this is needed for test it_throws_truncate_collection_failed_exception
+        }
         $this->connection->delete(Urls::URL_COLLECTION . '/bar');
         unset($this->connection);
     }

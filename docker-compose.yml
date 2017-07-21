@@ -3,11 +3,13 @@ services:
   php:
     # To run tests docker-compose run --rm php vendor/bin/phpunit
     image: prooph/php:7.1-cli-xdebug
+    environment:
+      PHP_IDE_CONFIG: "serverName=application"
     volumes:
       - "./:/app"
 
   arangodb:
-    image: arangodb:3.1.9
+    image: arangodb:3.2.0
     ports:
       - 8529:8529
     environment:

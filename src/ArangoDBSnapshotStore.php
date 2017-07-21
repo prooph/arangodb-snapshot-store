@@ -14,7 +14,10 @@ namespace Prooph\ArangoDB\SnapshotStore;
 
 use ArangoDBClient\Batch;
 use ArangoDBClient\Connection;
+use ArangoDBClient\ServerException;
 use ArangoDBClient\Statement;
+use ArangoDBClient\Urls;
+use Prooph\ArangoDB\SnapshotStore\Exception\TruncateCollectionFailed;
 use Prooph\SnapshotStore\Snapshot;
 use Prooph\SnapshotStore\SnapshotStore;
 
@@ -109,6 +112,18 @@ final class ArangoDBSnapshotStore implements SnapshotStore
         }
 
         $batch->process();
+    }
+
+    public function removeAll(string $aggregateType): void
+    {
+        try {
+            $this->connection->put(
+                Urls::URL_COLLECTION . '/' . $this->getCollectionName($aggregateType) . '/truncate',
+                ''
+            );
+        } catch (ServerException $ex) {
+            throw TruncateCollectionFailed::with($this->getCollectionName($aggregateType), $ex);
+        }
     }
 
     private function getCollectionName(string $aggregateType): string
