@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace ProophTest\ArangoDB\SnapshotStore;
+namespace ProophTest\SnapshotStore\ArangoDb;
 
 use ArangoDBClient\Connection;
 use ArangoDBClient\ServerException;
@@ -18,8 +18,8 @@ use ArangoDBClient\Urls;
 use DateTimeImmutable;
 use DateTimeZone;
 use PHPUnit\Framework\TestCase;
-use Prooph\ArangoDB\SnapshotStore\ArangoDBSnapshotStore;
-use Prooph\ArangoDB\SnapshotStore\Exception\TruncateCollectionFailed;
+use Prooph\SnapshotStore\ArangoDb\ArangoDBSnapshotStore;
+use Prooph\SnapshotStore\ArangoDb\Exception\TruncateCollectionFailed;
 use Prooph\SnapshotStore\Snapshot;
 
 class ArangoDBSnapshotStoreTest extends TestCase

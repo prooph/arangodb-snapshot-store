@@ -10,13 +10,13 @@
 
 declare(strict_types=1);
 
-namespace ProophTest\ArangoDB\SnapshotStore\Container;
+namespace ProophTest\SnapshotStore\ArangoDb\Container;
 
 use Interop\Container\ContainerInterface;
 use PHPUnit\Framework\TestCase;
-use Prooph\ArangoDB\SnapshotStore\ArangoDBSnapshotStore;
-use Prooph\ArangoDB\SnapshotStore\Container\ArangoDBSnapshotStoreFactory;
-use ProophTest\ArangoDB\SnapshotStore\TestUtil;
+use Prooph\SnapshotStore\ArangoDb\ArangoDBSnapshotStore;
+use Prooph\SnapshotStore\ArangoDb\Container\ArangoDBSnapshotStoreFactory;
+use ProophTest\SnapshotStore\ArangoDb\TestUtil;
 
 class ArangoDBSnapshotStoreFactoryTest extends TestCase
 {
