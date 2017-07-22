@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace ProophTest\ArangoDB\SnapshotStore;
+namespace ProophTest\SnapshotStore\ArangoDb;
 
 use ArangoDBClient\Connection;
 use ArangoDBClient\ConnectionOptions;

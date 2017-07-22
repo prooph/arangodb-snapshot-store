@@ -57,12 +57,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Prooph\\ArangoDB\\SnapshotStore\\": "src/"
+            "Prooph\\SnapshotStore\\ArangoDb\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "ProophTest\\ArangoDB\\SnapshotStore\\": "tests/",
+            "ProophTest\\SnapshotStore\\ArangoDb\\": "tests/",
             "ProophTest\\EventSourcing\\": "vendor/prooph/event-sourcing/tests/"
         }
     },

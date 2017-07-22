@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Prooph\ArangoDB\SnapshotStore\Container;
+namespace Prooph\SnapshotStore\ArangoDb\Container;
 
 use ArangoDBClient\Connection;
 use ArangoDBClient\ConnectionOptions;
@@ -19,7 +19,7 @@ use Interop\Config\ConfigurationTrait;
 use Interop\Config\ProvidesDefaultOptions;
 use Interop\Config\RequiresConfigId;
 use Interop\Container\ContainerInterface;
-use Prooph\ArangoDB\SnapshotStore\ArangoDBSnapshotStore;
+use Prooph\SnapshotStore\ArangoDb\ArangoDBSnapshotStore;
 
 class ArangoDBSnapshotStoreFactory implements ProvidesDefaultOptions, RequiresConfigId
 {

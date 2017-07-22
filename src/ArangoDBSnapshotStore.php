@@ -10,14 +10,14 @@
 
 declare(strict_types=1);
 
-namespace Prooph\ArangoDB\SnapshotStore;
+namespace Prooph\SnapshotStore\ArangoDb;
 
 use ArangoDBClient\Batch;
 use ArangoDBClient\Connection;
 use ArangoDBClient\ServerException;
 use ArangoDBClient\Statement;
 use ArangoDBClient\Urls;
-use Prooph\ArangoDB\SnapshotStore\Exception\TruncateCollectionFailed;
+use Prooph\SnapshotStore\ArangoDb\Exception\TruncateCollectionFailed;
 use Prooph\SnapshotStore\Snapshot;
 use Prooph\SnapshotStore\SnapshotStore;
 

@@ -9,7 +9,7 @@
  */
 declare(strict_types=1);
 
-namespace Prooph\ArangoDB\SnapshotStore\Exception;
+namespace Prooph\SnapshotStore\ArangoDb\Exception;
 
 interface ArangoDbSnapshotStoreException
 {
