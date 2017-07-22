@@ -7,7 +7,6 @@ matrix:
       env:
         - DEPENDENCIES=""
         - EXECUTE_CS_CHECK=true
-        - TEST_COVERAGE=true
         - ARANGODB_VERSION=3.0
     - php: 7.1
       env:
@@ -16,7 +15,6 @@ matrix:
     - php: 7.1
       env:
         - DEPENDENCIES=""
-        - EXECUTE_CS_CHECK=true
         - TEST_COVERAGE=true
         - ARANGODB_VERSION=3.1
     - php: 7.1
@@ -26,8 +24,6 @@ matrix:
     - php: 7.1
       env:
         - DEPENDENCIES=""
-        - EXECUTE_CS_CHECK=true
-        - TEST_COVERAGE=true
         - ARANGODB_VERSION=3.2
     - php: 7.1
       env:
