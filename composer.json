@@ -32,7 +32,7 @@
     "require": {
         "php": "^7.1",
         "prooph/snapshot-store" : "^1.1",
-        "triagens/arangodb": "dev-devel"
+        "triagens/arangodb": "^3.2"
     },
     "require-dev": {
         "container-interop/container-interop": "^1.1",
