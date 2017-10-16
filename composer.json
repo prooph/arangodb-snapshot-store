@@ -36,20 +36,20 @@
     },
     "require-dev": {
         "container-interop/container-interop": "^1.1",
-        "sandrokeil/interop-config": "^2.0.1",
-        "phpunit/phpunit": "^6.0",
+        "malukenho/docheader": "^0.1.4",
         "phpspec/prophecy": "^1.7",
+        "phpunit/phpunit": "^6.0",
         "prooph/php-cs-fixer-config": "^0.1.1",
+        "sandrokeil/interop-config": "^2.0.1",
         "satooshi/php-coveralls": "^1.0",
-        "zendframework/zend-servicemanager": "^3.1",
-        "malukenho/docheader": "^0.1.4"
+        "zendframework/zend-servicemanager": "^3.1"
     },
     "suggest" : {
-        "prooph/pdo-event-store": "For usage with MySQL or Postgres as event store",
-        "prooph/mongodb-event-store": "For usage with MongoDB as event store",
-        "prooph/arangodb-event-store": "For usage with ArangoDB as event store",
-        "prooph/service-bus" : "Message bus facade to connect the event store with messaging systems",
         "container-interop/container-interop": "For usage of provided factories",
+        "prooph/arangodb-event-store": "For usage with ArangoDB as event store",
+        "prooph/mongodb-event-store": "For usage with MongoDB as event store",
+        "prooph/pdo-event-store": "For usage with MySQL or Postgres as event store",
+        "prooph/service-bus" : "Message bus facade to connect the event store with messaging systems",
         "sandrokeil/interop-config": "For usage of provided factories"
     },
     "conflict": {
@@ -81,5 +81,8 @@
         "cs-fix": "php-cs-fixer fix -v --diff",
         "docheader": "docheader check src/ tests/",
         "test": "phpunit"
+    },
+    "config": {
+        "sort-packages": true
     }
 }
