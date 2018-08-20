@@ -4,6 +4,12 @@
 [![Coverage Status](https://coveralls.io/repos/github/prooph/arangodb-snapshot-store/badge.svg?branch=master)](https://coveralls.io/github/prooph/arangodb-snapshot-store?branch=master)
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/prooph/improoph)
 
+## Important
+
+This library will receive support until December 31, 2019 and will then be deprecated.
+
+For further information see the official announcement here: [https://www.sasaprolic.com/2018/08/the-future-of-prooph-components.html](https://www.sasaprolic.com/2018/08/the-future-of-prooph-components.html)
+
 ## Overview
 
 [ArangoDB](https://www.arangodb.com/) implementation of snapshot store
