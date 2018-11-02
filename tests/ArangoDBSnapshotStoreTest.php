@@ -1,8 +1,9 @@
 <?php
+
 /**
- * This file is part of the prooph/arangodb-snapshot-store.
- * (c) 2016-2017 prooph software GmbH <contact@prooph.de>
- * (c) 2016-2017 Sascha-Oliver Prolic <saschaprolic@googlemail.com>
+ * This file is part of prooph/arangodb-snapshot-store.
+ * (c) 2016-2018 prooph software GmbH <contact@prooph.de>
+ * (c) 2016-2018 Sascha-Oliver Prolic <saschaprolic@googlemail.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -42,7 +43,7 @@ class ArangoDBSnapshotStoreTest extends TestCase
         $aggregateRoot = ['name' => 'Sascha'];
         $aggregateType = 'user';
 
-        $date = date('Y-m-d\TH:i:s.u');
+        $date = \date('Y-m-d\TH:i:s.u');
         $now = DateTimeImmutable::createFromFormat('Y-m-d\TH:i:s.u', $date, new DateTimeZone('UTC'));
 
         $snapshot = new Snapshot($aggregateType, 'id', $aggregateRoot, 1, $now);
@@ -65,7 +66,7 @@ class ArangoDBSnapshotStoreTest extends TestCase
         $aggregateRoot = ['name' => 'Sascha'];
         $aggregateType = 'user';
 
-        $date = date('Y-m-d\TH:i:s.u');
+        $date = \date('Y-m-d\TH:i:s.u');
         $now = DateTimeImmutable::createFromFormat('Y-m-d\TH:i:s.u', $date, new DateTimeZone('UTC'));
 
         $snapshot1 = new Snapshot($aggregateType, 'id1', $aggregateRoot, 1, $now);
@@ -89,7 +90,7 @@ class ArangoDBSnapshotStoreTest extends TestCase
         $aggregateRoot = new \stdClass();
         $aggregateRoot->foo = 'bar';
 
-        $date = date('Y-m-d\TH:i:s.u');
+        $date = \date('Y-m-d\TH:i:s.u');
         $now = DateTimeImmutable::createFromFormat('Y-m-d\TH:i:s.u', $date, new DateTimeZone('UTC'));
 
         $snapshot = new Snapshot($aggregateType, 'id', $aggregateRoot, 1, $now);
@@ -111,7 +112,7 @@ class ArangoDBSnapshotStoreTest extends TestCase
         $aggregateRoot = ['name' => 'Sascha'];
         $aggregateType = 'user';
 
-        $date = date('Y-m-d\TH:i:s.u');
+        $date = \date('Y-m-d\TH:i:s.u');
         $now = DateTimeImmutable::createFromFormat('Y-m-d\TH:i:s.u', $date, new DateTimeZone('UTC'));
 
         $snapshot = new Snapshot($aggregateType, 'id', $aggregateRoot, 1, $now);
