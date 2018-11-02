@@ -36,7 +36,6 @@
     },
     "require-dev": {
         "container-interop/container-interop": "^1.1",
-        "malukenho/docheader": "^0.1.4",
         "phpspec/prophecy": "^1.7",
         "phpunit/phpunit": "^6.0",
         "prooph/php-cs-fixer-config": "^0.3",
